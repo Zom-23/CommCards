@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace CommCards.Cards
 {
-    class Zom_23 : CustomCard
+    class Poppycars : CustomCard
     {
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
@@ -33,7 +33,7 @@ namespace CommCards.Cards
 
         protected override string GetDescription()
         {
-            return "TODO";
+            return "";
         }
 
         protected override CardInfo.Rarity GetRarity()
@@ -48,15 +48,15 @@ namespace CommCards.Cards
                 new CardInfoStat
                 {
                     positive = true,
-                    stat = "+",
-                    amount = "Nothing Yet",
+                    stat = "",
+                    amount = "",
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned
                 },
                 new CardInfoStat
                 {
                     positive = false,
-                    stat = "-",
-                    amount = "Nothing Yet",
+                    stat = "",
+                    amount = "",
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned
                 }
             };
@@ -69,7 +69,7 @@ namespace CommCards.Cards
 
         protected override string GetTitle()
         {
-            return "Zom_23";
+            return "";
         }
 
         public override string GetModName()

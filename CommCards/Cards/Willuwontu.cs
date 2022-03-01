@@ -69,7 +69,7 @@ namespace CommCards.Cards
 
         protected override string GetTitle()
         {
-            return "";
+            return "Willuwontu";
         }
 
         public override string GetModName()

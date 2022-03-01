@@ -72,6 +72,7 @@
     <Compile Include="Cards\HatchetDaddy.cs" />
     <Compile Include="Cards\Orangenalname.cs" />
     <Compile Include="Cards\otDan.cs" />
+    <Compile Include="Cards\Poppycars.cs" />
     <Compile Include="Cards\Pykess.cs" />
     <Compile Include="Cards\Template.cs" />
     <Compile Include="Cards\Tilastokeskus.cs" />

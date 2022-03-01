@@ -17,10 +17,13 @@ namespace CommCards.Cards
 
             Action<BlockTrigger.BlockTriggerType> mapChange(Player _player, Block _block)
             {
-                
+                string changeTo = MapManager.instance.levels[UnityEngine.Random.Range(0, MapManager.instance.levels.Length)];
                 return delegate (BlockTrigger.BlockTriggerType trigger)
                 {
-                    MapManager.instance.CallInNewMapAndMovePlayers(int.Parse(MapManager.instance.levels[UnityEngine.Random.Range(0, MapManager.instance.levels.Length)]));
+                    MapManager.instance.UnloadScene(MapManager.instance.currentMap.Scene);
+                    MapManager.instance.RPCA_CallInNewMapAndMovePlayers(int.Parse(changeTo));
+                   // MapManager.instance.LoadLevelFromID(int.Parse(MapManager.instance.levels[UnityEngine.Random.Range(0, MapManager.instance.levels.Length)]));
+                    MapManager.instance.RPCA_LoadLevel(changeTo);
                 };
             }
         }
