@@ -17,13 +17,26 @@ namespace CommCards.Cards
 
             Action<BlockTrigger.BlockTriggerType> mapChange(Player _player, Block _block)
             {
-                string changeTo = MapManager.instance.levels[UnityEngine.Random.Range(0, MapManager.instance.levels.Length)];
                 return delegate (BlockTrigger.BlockTriggerType trigger)
                 {
-                    MapManager.instance.UnloadScene(MapManager.instance.currentMap.Scene);
-                    MapManager.instance.RPCA_CallInNewMapAndMovePlayers(int.Parse(changeTo));
-                   // MapManager.instance.LoadLevelFromID(int.Parse(MapManager.instance.levels[UnityEngine.Random.Range(0, MapManager.instance.levels.Length)]));
-                    MapManager.instance.RPCA_LoadLevel(changeTo);
+                    string changeTo = MapManager.instance.levels[UnityEngine.Random.Range(0, MapManager.instance.levels.Length)];
+                    Player[] playerData = PlayerManager.instance.players.ToArray();
+
+                    MapManager.instance.LoadNextLevel(true, true);
+                    MapManager.instance.RPCA_CallInNewMapAndMovePlayers(MapManager.instance.currentLevelID);
+                    Player[] newPlayerData = PlayerManager.instance.players.ToArray();
+                    for (int i = 0; i < playerData.Length; i++)
+                    {
+                        newPlayerData[i] = playerData[i];
+                    }
+
+                    //MapManager.instance.UnloadScene(MapManager.instance.currentMap.Scene);
+                    //MapManager.instance.RPCA_LoadLevel(changeTo);
+                    //MapManager.instance.RPCA_CallInNewMapAndMovePlayers(int.Parse(changeTo));
+                    //PlayerManager.instance.RPCA_MovePlayers();
+                    //PlayerManager.instance.SetPlayersSimulated(true);
+                    //MapManager.instance.LoadLevelFromID(int.Parse(MapManager.instance.levels[UnityEngine.Random.Range(0, MapManager.instance.levels.Length)]));
+                    
                 };
             }
         }

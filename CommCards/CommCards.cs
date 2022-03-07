@@ -41,7 +41,7 @@ namespace CommCards
         //Start up the Cards!!
         public void Start()
         {
-
+            CustomCard.BuildCard<Tilastokeskus>();
         }
     }
 }
