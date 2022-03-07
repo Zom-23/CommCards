@@ -11,14 +11,26 @@ namespace CommCards.Cards
 {
     class Poppycars : CustomCard
     {
+        int bounceCount = 0;
+
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
+            GetComponentInParent<RayHitReflect>().reflectAction += new Action<HitInfo>(IncreaseSpeed);
+            gun.reflects += 3;
 
+            void IncreaseSpeed(HitInfo hitInfo)
+            {
+                characterStats.movementSpeed *= .15f;
+                bounceCount++;
+
+                if (bounceCount % 5 == 0)
+                    gun.reflects++;
+            }
         }
 
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-
+            
         }
 
         public override void OnRemoveCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
@@ -33,12 +45,12 @@ namespace CommCards.Cards
 
         protected override string GetDescription()
         {
-            return "";
+            return "Move faster each bounce & gain a bounce every 5 bounces";
         }
 
         protected override CardInfo.Rarity GetRarity()
         {
-            return CardInfo.Rarity.Common;
+            return CardInfo.Rarity.Rare;
         }
 
         protected override CardInfoStat[] GetStats()
@@ -48,15 +60,8 @@ namespace CommCards.Cards
                 new CardInfoStat
                 {
                     positive = true,
-                    stat = "",
-                    amount = "",
-                    simepleAmount = CardInfoStat.SimpleAmount.notAssigned
-                },
-                new CardInfoStat
-                {
-                    positive = false,
-                    stat = "",
-                    amount = "",
+                    stat = "Bounces",
+                    amount = "+3",
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned
                 }
             };

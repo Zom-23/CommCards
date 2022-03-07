@@ -30,7 +30,7 @@ namespace CommCards
     [BepInPlugin(ModId, ModName, Version)] //Make it an acutal plugin
     [BepInProcess("Rounds.exe")]
 
-    public class ZomCards : BaseUnityPlugin
+    public class CommCards : BaseUnityPlugin
     {
         private const string ModId = "com.Comm.rounds.card";
         private const string ModName = "Community Cards";
@@ -42,6 +42,14 @@ namespace CommCards
         public void Start()
         {
             CustomCard.BuildCard<Tilastokeskus>();
+            CustomCard.BuildCard<PykessI>();
+            CustomCard.BuildCard<PykessII>();
+            CustomCard.BuildCard<PykessIII>();
+            CustomCard.BuildCard<PykessIV>();
+            CustomCard.BuildCard<Pykess>();
+            CustomCard.BuildCard<Poppycars>();
+            CustomCard.BuildCard<HatchetDaddy>();
+            CustomCard.BuildCard<Zom_23>();
         }
     }
 }
