@@ -9,6 +9,8 @@ using UnityEngine;
 
 namespace CommCards.Cards
 {
+    //Moon based effects - Effect for each of the moon phases
+    //Change every 7.5 seconds
     class XAngelMoonX : CustomCard
     {
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
@@ -16,9 +18,42 @@ namespace CommCards.Cards
 
         }
 
-        public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
-        {
+        void newMoon()
+        {//Invisible player
+        }
 
+        void waxingCrescent()
+        {//
+            //right side less than half filled
+        }
+
+        void firstQuarter()
+        {//
+            //right side half filled
+        }
+
+        void waxingGibbous()
+        {//
+            //right side over half filled
+        }
+
+        void fullMoon()
+        {//Large stat bonuses
+        }
+
+        void waningGibbous()
+        {//
+            //left side over half filled
+        }
+
+        void thirdQuarter()
+        {//
+            //left side half filled
+        }
+
+        void waningCrescent()
+        {//
+            //left side less than half filled
         }
 
         public override void OnRemoveCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
@@ -38,7 +73,7 @@ namespace CommCards.Cards
 
         protected override CardInfo.Rarity GetRarity()
         {
-            return CardInfo.Rarity.Common;
+            return CardInfo.Rarity.Rare;
         }
 
         protected override CardInfoStat[] GetStats()

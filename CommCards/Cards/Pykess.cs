@@ -203,6 +203,31 @@ namespace CommCards.Cards
             }
         }
 
+        public override void OnRemoveCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
+        {
+            GameModeManager.RemoveHook(GameModeHooks.HookRoundStart, murderEffect);
+
+            IEnumerator murderEffect(IGameModeHandler gm)
+            {
+                List<Player> oppPlayers = new List<Player>(PlayerManager.instance.players.ToArray().Where(p => p.teamID != player.teamID));
+
+                foreach (Player oppPlayer in oppPlayers)
+                {
+                    Unbound.Instance.ExecuteAfterSeconds(2f, delegate
+                    {
+                        oppPlayer.data.view.RPC("RPCA_Die", RpcTarget.All, new object[]
+                        {
+                                    new Vector2(0, 1)
+                        });
+
+                    });
+                }
+
+
+                yield break;
+            }
+        }
+
         protected override GameObject GetCardArt()
         {
             return null;
