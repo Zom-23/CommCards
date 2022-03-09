@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnboundLib;
 using UnboundLib.Cards;
 using UnityEngine;
+using CommCards.Extensions;
+using UnboundLib.GameModes;
 
 namespace CommCards.Cards
 {
@@ -15,45 +18,87 @@ namespace CommCards.Cards
     {
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
+            int[] phase = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
+            int currentPhase = 0;
 
-        }
+            GameModeManager.AddHook(GameModeHooks.HookBattleStart, startCycle);
 
-        void newMoon()
-        {//Invisible player
-        }
+            IEnumerator startCycle(IGameModeHandler gm)
+            {
+                phaseSwap(); yield break;
+            }
 
-        void waxingCrescent()
-        {//
-            //right side less than half filled
-        }
+            void phaseSwap()
+            {
+                switch (currentPhase)
+                {
+                    case 0:
+                        newMoon(); break;
+                    case 1:
+                        waxingCrescent(); break;
+                    case 2:
+                        firstQuarter(); break;
+                    case 3:
+                        waxingGibbous(); break;
+                    case 4:
+                        fullMoon(); break;
+                    case 5:
+                        waningGibbous(); break;
+                    case 6:
+                        thirdQuarter(); break;
+                    case 7:
+                        waningCrescent(); currentPhase = -1; break;
+                    default:
+                        break;
+                }
 
-        void firstQuarter()
-        {//
-            //right side half filled
-        }
+                if (PlayerStatus.PlayerAliveAndSimulated(player))
+                {
+                    player.ExecuteAfterSeconds(7.5f, () =>
+                    { currentPhase++; phaseSwap(); });
+                }
+                else if (currentPhase == -1)
+                    currentPhase = 0;
+            }
 
-        void waxingGibbous()
-        {//
-            //right side over half filled
-        }
+            void newMoon()
+            {//Invisible player
+            }
 
-        void fullMoon()
-        {//Large stat bonuses
-        }
+            void waxingCrescent()
+            {//grow effect
+             //right side less than half filled
+            }
 
-        void waningGibbous()
-        {//
-            //left side over half filled
-        }
+            void firstQuarter()
+            {//flight
+             //right side half filled
+            }
 
-        void thirdQuarter()
-        {//
-            //left side half filled
-        }
+            void waxingGibbous()
+            {//
+             //right side over half filled
+            }
 
-        void waningCrescent()
-        {//
-            //left side less than half filled
+            void fullMoon()
+            {//Large stat bonuses
+             //blood moon chance - give all effects or special berserker effect
+            }
+
+            void waningGibbous()
+            {//
+             //left side over half filled
+            }
+
+            void thirdQuarter()
+            {//meteor shower
+             //left side half filled
+            }
+
+            void waningCrescent()
+            {//lowered block cooldown
+             //left side less than half filled
+            }
         }
 
         public override void OnRemoveCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)

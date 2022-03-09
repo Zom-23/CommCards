@@ -102,6 +102,7 @@
     <Compile Include="Cards\XAngelMoonX.cs" />
     <Compile Include="Cards\Zom_23.cs" />
     <Compile Include="CommCards.cs" />
+    <Compile Include="Extensions\PlayerStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
