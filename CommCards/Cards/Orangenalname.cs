@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnboundLib;
 using UnboundLib.Cards;
 using UnityEngine;
+using ModdingUtils.MonoBehaviours;
 
 namespace CommCards.Cards
 {
@@ -13,7 +14,16 @@ namespace CommCards.Cards
     {
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-
+            health.gameObject?.transform?.Find("Limbs")?.gameObject?.SetActive(false);
+            characterStats.movementSpeed *= 1.5f;
+            InAirJumpEffect flight = player.gameObject.GetOrAddComponent<InAirJumpEffect>();
+            flight.SetJumpMult(0.1f);
+            flight.AddJumps(int.MaxValue);
+            flight.SetCostPerJump(1);
+            flight.SetContinuousTrigger(true);
+            flight.SetResetOnWallGrab(true);
+            flight.SetInterval(0.1f);
+            gravity.gravityForce = .01f;
         }
 
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
@@ -33,7 +43,7 @@ namespace CommCards.Cards
 
         protected override string GetDescription()
         {
-            return "";
+            return "Your legs are gone ¯\\_(ツ)_/¯";
         }
 
         protected override CardInfo.Rarity GetRarity()
@@ -69,7 +79,7 @@ namespace CommCards.Cards
 
         protected override string GetTitle()
         {
-            return "";
+            return "Orangenalname";
         }
 
         public override string GetModName()

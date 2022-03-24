@@ -9,6 +9,7 @@ using UnboundLib.Cards;
 using UnityEngine;
 using CommCards.Extensions;
 using UnboundLib.GameModes;
+using ModdingUtils.MonoBehaviours;
 
 namespace CommCards.Cards
 {
@@ -63,16 +64,35 @@ namespace CommCards.Cards
 
             void newMoon()
             {//Invisible player
+                ReversibleColorEffect colorEffect = player.gameObject.AddComponent<ReversibleColorEffect>();
+                colorEffect.SetColor(Color.clear);
+                player.ExecuteAfterSeconds(7.5f, () => { colorEffect.Destroy(); });
             }
 
             void waxingCrescent()
             {//grow effect
              //right side less than half filled
+                ReversibleEffect tempStats = player.gameObject.AddComponent<ReversibleEffect>();
+                tempStats.gun.damageAfterDistanceMultiplier *= 1.5f;
+                player.ExecuteAfterSeconds(7.5f, () => { tempStats.Destroy(); });
             }
 
             void firstQuarter()
             {//flight
              //right side half filled
+                InAirJumpEffect flight = player.gameObject.GetOrAddComponent<InAirJumpEffect>();
+                flight.SetJumpMult(0.1f);
+                flight.AddJumps(100);
+                flight.SetCostPerJump(1);
+                flight.SetContinuousTrigger(true);
+                flight.SetResetOnWallGrab(true);
+                flight.SetInterval(0.1f);
+
+                var prevGrav = gravity.gravityForce;
+                gravity.gravityForce = 0.01f;
+
+                player.ExecuteAfterSeconds(7.5f, () => { flight.Destroy(); gravity.gravityForce = prevGrav; });
+
             }
 
             void waxingGibbous()
@@ -83,6 +103,15 @@ namespace CommCards.Cards
             void fullMoon()
             {//Large stat bonuses
              //blood moon chance - give all effects or special berserker effect
+                ReversibleEffect tempStats = player.gameObject.AddComponent<ReversibleEffect>();
+                tempStats.gun.damage *= 2f;
+                tempStats.gun.reflects++;
+                tempStats.gun.reloadTime /= 2f;
+                tempStats.data.stats.regen += 3f;
+                tempStats.data.health *= 3f;
+
+                player.ExecuteAfterSeconds(7.5f, () => { tempStats.Destroy(); });
+
             }
 
             void waningGibbous()
@@ -98,6 +127,10 @@ namespace CommCards.Cards
             void waningCrescent()
             {//lowered block cooldown
              //left side less than half filled
+                ReversibleEffect tempStats = player.gameObject.AddComponent<ReversibleEffect>();
+                tempStats.block.cooldown /= 2f;
+
+                player.ExecuteAfterSeconds(7.5f, () => { tempStats.Destroy(); });
             }
         }
 

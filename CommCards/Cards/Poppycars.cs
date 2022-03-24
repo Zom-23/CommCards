@@ -74,7 +74,7 @@ namespace CommCards.Cards
 
         protected override string GetTitle()
         {
-            return "";
+            return "Poppycars";
         }
 
         public override string GetModName()

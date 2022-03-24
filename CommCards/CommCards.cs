@@ -50,6 +50,7 @@ namespace CommCards
             CustomCard.BuildCard<Poppycars>();
             CustomCard.BuildCard<HatchetDaddy>();
             CustomCard.BuildCard<Zom_23>();
+            CustomCard.BuildCard<Orangenalname>();
         }
     }
 }
