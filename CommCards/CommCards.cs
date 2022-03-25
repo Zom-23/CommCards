@@ -51,6 +51,7 @@ namespace CommCards
             CustomCard.BuildCard<HatchetDaddy>();
             CustomCard.BuildCard<Zom_23>();
             CustomCard.BuildCard<Orangenalname>();
+            CustomCard.BuildCard<otDan>();
         }
     }
 }

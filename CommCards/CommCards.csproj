@@ -92,8 +92,12 @@
     <Compile Include="Cards\HatchetDaddy.cs" />
     <Compile Include="Cards\Orangenalname.cs" />
     <Compile Include="Cards\otDan.cs" />
+    <Compile Include="Cards\Penial.cs" />
     <Compile Include="Cards\Poppycars.cs" />
+    <Compile Include="Cards\Pudassassin.cs" />
     <Compile Include="Cards\Pykess.cs" />
+    <Compile Include="Cards\Root.cs" />
+    <Compile Include="Cards\RS_Mind.cs" />
     <Compile Include="Cards\Template.cs" />
     <Compile Include="Cards\Tilastokeskus.cs" />
     <Compile Include="Cards\TimeToGrind.cs" />
