@@ -107,10 +107,9 @@
     <Compile Include="Cards\Zom_23.cs" />
     <Compile Include="CommCards.cs" />
     <Compile Include="Extensions\PlayerStatus.cs" />
+    <Compile Include="MonoBehaviours\HammerMono.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MonoBehaviours\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

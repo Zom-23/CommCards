@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommCards.Cards
 {
+    //high intelligent bullets/high firepower
     class Pudassassin
     {
     }

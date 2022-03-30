@@ -52,6 +52,7 @@ namespace CommCards
             CustomCard.BuildCard<Zom_23>();
             CustomCard.BuildCard<Orangenalname>();
             CustomCard.BuildCard<otDan>();
+            CustomCard.BuildCard<Ascyst>();
         }
     }
 }

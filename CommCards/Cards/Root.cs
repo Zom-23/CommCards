@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace CommCards.Cards
 {
+    //tess - like chaos
+    //lilith - cool monos/"deals"
     class Root
     {
     }

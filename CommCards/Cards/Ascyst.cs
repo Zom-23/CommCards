@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnboundLib;
 using UnboundLib.Cards;
 using UnityEngine;
+using CommCards.MonoBehaviours;
 
 namespace CommCards.Cards
 {
@@ -13,7 +14,8 @@ namespace CommCards.Cards
     {
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-
+            gun.transform.GetChild(1).transform.GetChild(3).localScale = new Vector3(2f, 5f, 6f);
+            player.gameObject.GetOrAddComponent<HammerMono>();
         }
 
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
@@ -33,7 +35,7 @@ namespace CommCards.Cards
 
         protected override string GetDescription()
         {
-            return "";
+            return "The BAN hammer";
         }
 
         protected override CardInfo.Rarity GetRarity()
@@ -48,15 +50,15 @@ namespace CommCards.Cards
                 new CardInfoStat
                 {
                     positive = true,
-                    stat = "",
-                    amount = "",
+                    stat = "Stunning bullets",
+                    amount = "+",
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned
                 },
                 new CardInfoStat
                 {
                     positive = false,
-                    stat = "",
-                    amount = "",
+                    stat = "Range",
+                    amount = "Short",
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned
                 }
             };
