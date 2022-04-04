@@ -36,7 +36,8 @@ namespace CommCards.MonoBehaviours
                     if (Vector2.Distance(otherPlayer.transform.position, gun.transform.position) <= this.range && gun.sinceAttack >= gun.attackSpeed && PlayerManager.instance.CanSeePlayer(player.transform.position, otherPlayer).canSee)
                     {
                         otherPlayer.data.healthHandler.CallTakeDamage(gun.damage * Vector2.up * 55, otherPlayer.transform.position);
-                        otherPlayer.data.stunHandler.AddStun(.7f);
+                        otherPlayer.data.movement.Move((otherPlayer.transform.position - gun.transform.position) * 100f);
+                        //otherPlayer.data.stunHandler.AddStun(.7f);
                         gun.sinceAttack = 0f;
                     }
                 }
