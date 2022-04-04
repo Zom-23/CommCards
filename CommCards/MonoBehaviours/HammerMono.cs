@@ -18,31 +18,27 @@ namespace CommCards.MonoBehaviours
         Gun gun;
         readonly float range = 1.75f;
 
-        void Awake()
+        void Start()
         {
             this.player = this.gameObject.GetComponent<Player>();
-            this.gun = this.gameObject.GetComponent<Gun>();
+            this.gun = player.data.weaponHandler.gun;
         }
 
         void Update()
         {
-            // if any player (friendlies included) is touched (i.e. within a very small range) turn them into gold
-            if (PlayerStatus.PlayerAliveAndSimulated(this.player))
+            if (PlayerStatus.PlayerAliveAndSimulated(player))
             {
                 // get all alive players that are not this player
-                List<Player> otherPlayers = PlayerManager.instance.players.Where(player => PlayerStatus.PlayerAliveAndSimulated(player) && (player.playerID != this.player.playerID)).ToList();
-
-                Vector2 displacement;
+                List<Player> otherPlayers = PlayerManager.instance.players.Where(otherplayer => PlayerStatus.PlayerAliveAndSimulated(otherplayer) && (otherplayer.playerID != player.playerID)).ToList();
 
                 foreach (Player otherPlayer in otherPlayers)
                 {
-                    displacement = otherPlayer.transform.position - this.gun.transform.position;
-                    if (displacement.magnitude <= this.range)
+                    if (Vector2.Distance(otherPlayer.transform.position, gun.transform.position) <= this.range && gun.sinceAttack >= gun.attackSpeed && PlayerManager.instance.CanSeePlayer(player.transform.position, otherPlayer).canSee)
                     {
-                        // if the other player is within range, then add the gold effect to them
-                            otherPlayer.data.healthHandler.CallTakeDamage(new Vector3(gun.damage, 1), otherPlayer.transform.position);
+                        otherPlayer.data.healthHandler.CallTakeDamage(gun.damage * Vector2.up * 55, otherPlayer.transform.position);
+                        otherPlayer.data.stunHandler.AddStun(.7f);
+                        gun.sinceAttack = 0f;
                     }
-
                 }
             }
 

@@ -41,6 +41,7 @@ namespace CommCards
         //Start up the Cards!!
         public void Start()
         {
+            UnityEngine.Debug.Log("[Community Cards] Loading Cards");
             CustomCard.BuildCard<Tilastokeskus>();
             CustomCard.BuildCard<PykessI>();
             CustomCard.BuildCard<PykessII>();

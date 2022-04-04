@@ -16,6 +16,7 @@ namespace CommCards.Cards
         {
             gun.transform.GetChild(1).transform.GetChild(3).localScale = new Vector3(2f, 5f, 6f);
             player.gameObject.GetOrAddComponent<HammerMono>();
+            player.data.weaponHandler.enabled = false;
         }
 
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
@@ -50,15 +51,15 @@ namespace CommCards.Cards
                 new CardInfoStat
                 {
                     positive = true,
-                    stat = "Stunning bullets",
+                    stat = "Stunning hammer",
                     amount = "+",
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned
                 },
                 new CardInfoStat
                 {
                     positive = false,
-                    stat = "Range",
-                    amount = "Short",
+                    stat = "Gun",
+                    amount = "No",
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned
                 }
             };
