@@ -54,6 +54,8 @@ namespace CommCards
             CustomCard.BuildCard<Orangenalname>();
             CustomCard.BuildCard<otDan>();
             CustomCard.BuildCard<Ascyst>();
+            CustomCard.BuildCard<RS_Mind>();
+            CustomCard.BuildCard<Pudassassin>();
         }
     }
 }

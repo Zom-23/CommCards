@@ -96,7 +96,7 @@ namespace CommCards.Cards
 
         protected override string GetTitle()
         {
-            return "";
+            return "RS_Mind";
         }
 
         public override string GetModName()
