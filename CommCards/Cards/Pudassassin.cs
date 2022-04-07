@@ -7,6 +7,7 @@ using UnboundLib;
 using UnboundLib.Cards;
 using UnityEngine;
 using UnboundLib.GameModes;
+using CommCards.Extensions;
 
 namespace CommCards.Cards
 {
@@ -15,26 +16,18 @@ namespace CommCards.Cards
     {
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-            player.gameObject.GetOrAddComponent<RadarShot>();
-            RadarShot rs = player.gameObject.GetComponent<RadarShot>();
-
-            //gun.ShootPojectileAction += onShoot();
-            gun.AddAttackAction(onShoot);
-
-
-            void onShoot()
+            player.gameObject.GetOrAddComponent<Explosion>();
+            Explosion explosion = player.gameObject.GetComponent<Explosion>();
+            gun.AddAttackAction(DoExplosion);
+            void DoExplosion()
             {
-                rs.Go();
+                explosion.Explode();
             }
-                
-            /*
-            Action<UnityEngine.GameObject> onShoot()
-            {
-                return delegate (UnityEngine.GameObject trigger)
-                {
-                    rs.Go();
-                };     
-            }*/
+        }
+
+        public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
+        {
+            
         }
 
         protected override GameObject GetCardArt()
@@ -44,7 +37,7 @@ namespace CommCards.Cards
 
         protected override string GetDescription()
         {
-            return "Automatically hit people around you when you fire";
+            return "Press 'G' to launch a grenade";
         }
 
         protected override CardInfo.Rarity GetRarity()
@@ -86,6 +79,36 @@ namespace CommCards.Cards
         public override string GetModName()
         {
             return "Comm";
+        }
+    }
+
+    class GrenadeLaunch : MonoBehaviour
+    {
+        Player player;
+        Gun gun;
+        void Start()
+        {
+            player = gameObject.GetComponent<Player>();
+            gun = player.data.weaponHandler.gun;
+        }
+
+        void Go()
+        {
+            if (!PlayerStatus.PlayerAliveAndSimulated(player))
+                return;
+            
+        }
+
+        public HasToReturn DoHitEffect(HitInfo hit)
+        {
+            if (!hit.transform)
+            {
+                return HasToReturn.canContinue;
+            }
+
+            
+
+            return HasToReturn.canContinue;
         }
     }
 }
