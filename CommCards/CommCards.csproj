@@ -43,6 +43,10 @@
     <Reference Include="CardChoiceSpawnUniqueCardPatch">
       <HintPath>..\Libs\CardChoiceSpawnUniqueCardPatch.dll</HintPath>
     </Reference>
+    <Reference Include="InControl, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ROUNDS\Rounds_Data\Managed\InControl.dll</HintPath>
+    </Reference>
     <Reference Include="ModdingUtils">
       <HintPath>..\Libs\ModdingUtils.dll</HintPath>
     </Reference>
@@ -114,6 +118,7 @@
     <Compile Include="Cards\XAngelMoonX.cs" />
     <Compile Include="Cards\Zom_23.cs" />
     <Compile Include="CommCards.cs" />
+    <Compile Include="Extensions\PlayerActions.cs" />
     <Compile Include="Extensions\PlayerStatus.cs" />
     <Compile Include="MonoBehaviours\HammerMono.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
