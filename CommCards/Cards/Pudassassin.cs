@@ -15,6 +15,7 @@ using InControl;
 using ModdingUtils.MonoBehaviours;
 using UnboundLib;
 using System.Collections;
+using CommCards.Cards;
 
 namespace CommCards.Cards
 {
@@ -24,7 +25,8 @@ namespace CommCards.Cards
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
             player.gameObject.GetOrAddComponent<GrenadeLaunch>();
-            
+            //player.gameObject.GetOrAddComponent<buildGrenade>();
+            characterStats.GetAdditionalData().grenades++;
         }
 
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
@@ -54,15 +56,8 @@ namespace CommCards.Cards
                 new CardInfoStat
                 {
                     positive = true,
-                    stat = "",
-                    amount = "",
-                    simepleAmount = CardInfoStat.SimpleAmount.notAssigned
-                },
-                new CardInfoStat
-                {
-                    positive = false,
-                    stat = "",
-                    amount = "",
+                    stat = "Grenade",
+                    amount = "+1",
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned
                 }
             };
@@ -84,32 +79,38 @@ namespace CommCards.Cards
         }
     }
 
-    class GrenadeLaunch : MonoBehaviour
+    public class GrenadeLaunch : MonoBehaviour
     {
         Player player;
         Gun gun;
-        ReversibleEffect grenade;
         void Start()
         {
             player = gameObject.GetComponent<Player>();
             gun = player.data.weaponHandler.gun;
-            
+
+            //player.ExecuteAfterSeconds(.5f, () => { Go(); });
         }
 
-        void Go()
+        public void Go()
         {
             if (!PlayerStatus.PlayerAliveAndSimulated(player))
                 return;
-            buildGrenade();
-            this.player.data.weaponHandler.gun.Attack(0f, true, gun.damage, 1f, false);
+            player.gameObject.GetOrAddComponent<buildGrenade>();
+            player.ExecuteAfterSeconds(.01f, () => { player.data.weaponHandler.gun.Attack(0); });
+            Destroy(player.gameObject.GetComponent<buildGrenade>());
+
         }
+    }
 
-        void buildGrenade()
+    public class buildGrenade : ReversibleEffect
+    {
+        public override void OnStart()
         {
-            grenade = new ReversibleEffect();
-            grenade.gun.damage *= 2f;
+            UnityEngine.Debug.Log("Grenade built");
+            player = gameObject.GetComponent<Player>();
+            gun = player.data.weaponHandler.gun;
 
-
+            gun.damage *= 2f;
             //Code taken from Boss Sloth
             var explosiveBullet = (GameObject)Resources.Load("0 cards/Explosive bullet");
             var a_Explosion = explosiveBullet.GetComponent<Gun>().objectsToSpawn[0].effect;
@@ -120,9 +121,8 @@ namespace CommCards.Cards
             DestroyImmediate(explo.GetComponent<RemoveAfterSeconds>());
             var explodsion = explo.GetComponent<Explosion>();
             explodsion.force = 100000;
-            gun.damage = 2f;
 
-            grenade.gun.objectsToSpawn = new[]
+            gun.objectsToSpawn = new[]
             {
                 new ObjectsToSpawn
                 {
@@ -162,4 +162,20 @@ namespace CommCards.Cards
             __result.GetAdditionalData().switchWeapon.AddDefaultBinding(Key.G);
         }
     }
+    [HarmonyPatch(typeof(GeneralInput), "Update")]
+    class GeneralInputPatchUpdate
+    {
+        private static void Postfix(GeneralInput __instance)
+        {
+            if (__instance.GetComponent<CharacterData>().playerActions.GetAdditionalData().switchWeapon != null && __instance.GetComponent<Player>() != null && __instance.GetComponent<CharacterData>() != null)
+                UnityEngine.Debug.Log("Something was null");
+            if (__instance.GetComponent<CharacterData>().playerActions.GetAdditionalData().switchWeapon.WasPressed && __instance.GetComponent<CharacterStatModifiers>().GetAdditionalData().grenades >= 1)
+            {
+                UnityEngine.Debug.Log("Keybind pressed");
+                __instance.GetComponent<CharacterData>().player.GetComponent<GrenadeLaunch>().Go();
+            }
+        }
+    }
 }
+
+
