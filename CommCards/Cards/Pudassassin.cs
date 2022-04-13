@@ -25,7 +25,6 @@ namespace CommCards.Cards
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
             player.gameObject.GetOrAddComponent<GrenadeLaunch>();
-            //player.gameObject.GetOrAddComponent<buildGrenade>();
             characterStats.GetAdditionalData().grenades++;
         }
 
@@ -94,8 +93,15 @@ namespace CommCards.Cards
             if (!PlayerStatus.PlayerAliveAndSimulated(player))
                 return;
             player.gameObject.GetOrAddComponent<buildGrenade>();
-            player.ExecuteAfterSeconds(.01f, () => { player.data.weaponHandler.gun.Attack(0); });
-            Destroy(player.gameObject.GetComponent<buildGrenade>());
+            player.ExecuteAfterSeconds(.01f, () => { player.data.weaponHandler.gun.Attack(0); removeGrenade(); });
+            //Destroy(player.gameObject.GetComponent<buildGrenade>());
+            player.data.stats.GetAdditionalData().grenades--;
+        }
+
+        void removeGrenade()
+        {
+            UnityEngine.Debug.Log("Removing Grenade effect");
+            Destroy(player.GetComponent<buildGrenade>());
         }
     }
 
@@ -167,7 +173,7 @@ namespace CommCards.Cards
             if (__instance.GetComponent<CharacterData>().playerActions.GetAdditionalData().switchWeapon.WasPressed && __instance.GetComponent<CharacterStatModifiers>().GetAdditionalData().grenades >= 1)
             {
                 UnityEngine.Debug.Log("Keybind pressed");
-                __instance.GetComponent<CharacterData>().player.GetComponent<GrenadeLaunch>().Go();
+                __instance.GetComponent<CharacterData>().player.gameObject.GetComponent<GrenadeLaunch>().Go();
             }
         }
     }

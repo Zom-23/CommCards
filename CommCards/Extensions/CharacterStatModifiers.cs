@@ -43,9 +43,9 @@ namespace CommCards.Extensions
     [HarmonyPatch(typeof(CharacterStatModifiers), "ResetStats")]
     class CharacterStatModifiersPatchResetStats
     {
-        private static void Prefix(CharacterStatModifiers _instance)
+        private static void Prefix(CharacterStatModifiers __instance)
         {
-            _instance.GetAdditionalData().grenades = 0;
+            __instance.GetAdditionalData().grenades = 0;
         }
     }
 }
