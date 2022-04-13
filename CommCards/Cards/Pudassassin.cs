@@ -87,8 +87,6 @@ namespace CommCards.Cards
         {
             player = gameObject.GetComponent<Player>();
             gun = player.data.weaponHandler.gun;
-
-            //player.ExecuteAfterSeconds(.5f, () => { Go(); });
         }
 
         public void Go()
@@ -98,7 +96,6 @@ namespace CommCards.Cards
             player.gameObject.GetOrAddComponent<buildGrenade>();
             player.ExecuteAfterSeconds(.01f, () => { player.data.weaponHandler.gun.Attack(0); });
             Destroy(player.gameObject.GetComponent<buildGrenade>());
-
         }
     }
 
@@ -167,8 +164,6 @@ namespace CommCards.Cards
     {
         private static void Postfix(GeneralInput __instance)
         {
-            if (__instance.GetComponent<CharacterData>().playerActions.GetAdditionalData().switchWeapon != null && __instance.GetComponent<Player>() != null && __instance.GetComponent<CharacterData>() != null)
-                UnityEngine.Debug.Log("Something was null");
             if (__instance.GetComponent<CharacterData>().playerActions.GetAdditionalData().switchWeapon.WasPressed && __instance.GetComponent<CharacterStatModifiers>().GetAdditionalData().grenades >= 1)
             {
                 UnityEngine.Debug.Log("Keybind pressed");

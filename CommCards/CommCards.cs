@@ -14,6 +14,7 @@ using UnboundLib.Cards;
 using UnboundLib.Utils;
 using CommCards.Cards;
 using Photon.Pun;
+using HarmonyLib;
 using CardChoiceSpawnUniqueCardPatch.CustomCategories;
 //using CommCards.MonoBehaviours;
 //Mod created by Zom_23 for the game ROUNDS based on the Modding Community
@@ -36,11 +37,15 @@ namespace CommCards
         private const string ModName = "Community Cards";
         public const string Version = "0.0.1"; //(major.minor.patch)
 
-
+        private void Awake()
+        {
+            new Harmony(ModId).PatchAll();
+        }
 
         //Start up the Cards!!
-        public void Start()
+        private void Start()
         {
+
             UnityEngine.Debug.Log("[Community Cards] Loading Cards");
             CustomCard.BuildCard<Tilastokeskus>();
             CustomCard.BuildCard<PykessI>();
@@ -56,6 +61,7 @@ namespace CommCards
             CustomCard.BuildCard<Ascyst>();
             CustomCard.BuildCard<RS_Mind>();
             CustomCard.BuildCard<Pudassassin>();
+
         }
     }
 }
