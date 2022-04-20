@@ -121,6 +121,7 @@
     <Compile Include="Extensions\CharacterStatModifiers.cs" />
     <Compile Include="Extensions\PlayerActions.cs" />
     <Compile Include="Extensions\PlayerStatus.cs" />
+    <Compile Include="MonoBehaviours\BounceStatChanges.cs" />
     <Compile Include="MonoBehaviours\HammerMono.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

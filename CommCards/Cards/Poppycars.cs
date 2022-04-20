@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnboundLib;
 using UnboundLib.Cards;
 using UnityEngine;
+using CommCards.MonoBehaviours;
 
 namespace CommCards.Cards
 {
@@ -15,17 +16,8 @@ namespace CommCards.Cards
 
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-            GetComponentInParent<RayHitReflect>().reflectAction += new Action<HitInfo>(IncreaseSpeed);
+            player.gameObject.GetOrAddComponent<BounceStatChanges>();
             gun.reflects += 3;
-
-            void IncreaseSpeed(HitInfo hitInfo)
-            {
-                characterStats.movementSpeed *= .15f;
-                bounceCount++;
-
-                if (bounceCount % 5 == 0)
-                    gun.reflects++;
-            }
         }
 
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)

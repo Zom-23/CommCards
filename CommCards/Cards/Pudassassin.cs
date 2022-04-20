@@ -93,15 +93,18 @@ namespace CommCards.Cards
             if (!PlayerStatus.PlayerAliveAndSimulated(player))
                 return;
             player.gameObject.GetOrAddComponent<buildGrenade>();
-            player.ExecuteAfterSeconds(.01f, () => { player.data.weaponHandler.gun.Attack(0); removeGrenade(); });
-            //Destroy(player.gameObject.GetComponent<buildGrenade>());
-            player.data.stats.GetAdditionalData().grenades--;
+            UnityEngine.Debug.Log($"{player.gameObject.GetComponent<buildGrenade>()}");
+            player.ExecuteAfterSeconds(.01f, () => { player.data.weaponHandler.gun.Attack(0, true, 1, 1, false);});
+            new WaitForSeconds(.2f);
+            player.gameObject.GetComponent<buildGrenade>().Destroy();
+            player.data.stats.GetAdditionalData().grenades--;  
         }
 
         void removeGrenade()
         {
-            UnityEngine.Debug.Log("Removing Grenade effect");
-            Destroy(player.GetComponent<buildGrenade>());
+            new WaitForSecondsRealtime(.1f);
+            UnityEngine.Debug.Log("Removing Grenade");
+            player.gameObject.GetComponent<buildGrenade>().Destroy();
         }
     }
 
