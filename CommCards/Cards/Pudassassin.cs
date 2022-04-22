@@ -94,15 +94,13 @@ namespace CommCards.Cards
                 return;
             player.gameObject.GetOrAddComponent<buildGrenade>();
             UnityEngine.Debug.Log($"{player.gameObject.GetComponent<buildGrenade>()}");
-            player.ExecuteAfterSeconds(.01f, () => { player.data.weaponHandler.gun.Attack(0, true, 1, 1, false);});
-            new WaitForSeconds(.2f);
-            player.gameObject.GetComponent<buildGrenade>().Destroy();
-            player.data.stats.GetAdditionalData().grenades--;  
+
+           
+            player.ExecuteAfterSeconds(.01f, () => { player.data.weaponHandler.gun.Attack(0, true, 1, 1, false); player.data.stats.GetAdditionalData().grenades--; removeGrenade(); }); 
         }
 
         void removeGrenade()
         {
-            new WaitForSecondsRealtime(.1f);
             UnityEngine.Debug.Log("Removing Grenade");
             player.gameObject.GetComponent<buildGrenade>().Destroy();
         }
@@ -110,6 +108,7 @@ namespace CommCards.Cards
 
     public class buildGrenade : ReversibleEffect
     {
+        int indx;
         public override void OnStart()
         {
             UnityEngine.Debug.Log("Grenade built");
@@ -127,7 +126,7 @@ namespace CommCards.Cards
             DestroyImmediate(explo.GetComponent<RemoveAfterSeconds>());
             var explodsion = explo.GetComponent<Explosion>();
             explodsion.force = 100000;
-
+            
             gun.objectsToSpawn = new[]
             {
                 new ObjectsToSpawn
@@ -144,6 +143,16 @@ namespace CommCards.Cards
                     scaleFromDamage = 0f
                 }
             };
+
+            indx = gun.objectsToSpawn.Length;
+        }
+
+        public void OnDestroy()
+        {
+            gun.damage /= 2;
+            gun.objectsToSpawn.ToList().RemoveAt(indx);
+            this.ClearModifiers();
+            Destroy(this);
         }
     }
 
