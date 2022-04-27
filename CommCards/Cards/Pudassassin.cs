@@ -147,7 +147,7 @@ namespace CommCards.Cards
             indx = gun.objectsToSpawn.Length;
         }
 
-        public void OnDestroy()
+        public override void OnOnDestroy()
         {
             gun.damage /= 2;
             gun.objectsToSpawn.ToList().RemoveAt(indx);

@@ -12,10 +12,14 @@ namespace CommCards.Extensions
     public class CharacterStatModifiersAdditionalData
     {
         public int grenades;
+        public bool hasPoppy;
+        public int bounceCount;
 
         public CharacterStatModifiersAdditionalData()
         {
             grenades = 0;
+            hasPoppy = false;
+            bounceCount = 0;
         }
     }
 
@@ -46,6 +50,8 @@ namespace CommCards.Extensions
         private static void Prefix(CharacterStatModifiers __instance)
         {
             __instance.GetAdditionalData().grenades = 0;
+            __instance.GetAdditionalData().hasPoppy = false;
+            __instance.GetAdditionalData().bounceCount = 0;
         }
     }
 }
