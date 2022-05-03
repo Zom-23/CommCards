@@ -20,127 +20,274 @@ namespace CommCards.Cards
     }
 
     class Tess : CustomCard
-    {//Experimental treatment effect
+    {
         int StatToChange;
         int SubStat;
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-            //0 = gun stat, 1 = ammo, 2 = health, 3 = gravity, 4 = block, 5 = stats
+            //adjust 5 stats, first 3 are positive changes, last 2 are negative changes
             System.Random rand = new System.Random();
-            StatToChange = rand.Next(6);
-            //Gun: 0 = attack speed, 1 = bursts, 2 = damage, 3 = gravity, 4 = reflects, 5 = reload time
-            //Ammo: 0 = max ammo, 1 = reload time
-            //Health: 0 = regeneration, 1 = max health
-            //Gravity: Gravity force
-            //Block: 0 = additional Blocks, 1 = cooldown
-            //Stats: 0 = life steal, 1 = speed, 2 = jumps, 3 = respawns, 4 = dmg over time, 5 = size
-            switch (StatToChange)
+            for(int i = 0; i < 5; i++)
             {
-                case 0:
-                    SubStat = rand.Next(6);
-                    break;
-                case 1:
-                    SubStat = rand.Next(2);
-                    break;
-                case 2:
-                    SubStat = rand.Next(2);
-                    break;
-                case 3:
-                    SubStat = 0;
-                    break;
-                case 4:
-                    SubStat = rand.Next(2);
-                    break;
-                case 5:
-                    SubStat = rand.Next(6);
-                    break;
-                default:
-                    break;
+                StatToChange = rand.Next(6);
+                switch (StatToChange)
+                {
+                    case 0:
+                        SubStat = rand.Next(6);
+                        break;
+                    case 1:
+                        SubStat = rand.Next(2);
+                        break;
+                    case 2:
+                        SubStat = rand.Next(2);
+                        break;
+                    case 3:
+                        SubStat = 0;
+                        break;
+                    case 4:
+                        SubStat = rand.Next(2);
+                        break;
+                    case 5:
+                        SubStat = rand.Next(6);
+                        break;
+                    default:
+                        break;
+                }
+
+                base.GetComponent<PhotonView>().RPC("RPCA_SetStats", RpcTarget.All, new object[] { StatToChange, SubStat });
+
+                switch (StatToChange)
+                {
+                    case 0: //Gun
+                        switch (SubStat)
+                        {
+                            case 0: //attack speed
+                                if(i < 3)
+                                {
+                                    gun.attackSpeed *= 2f;
+                                }
+                                else
+                                {
+                                    gun.attackSpeed /= 1.5f;
+                                }
+                                break;
+                            case 1: //bursts
+                                if (i < 3)
+                                {
+                                    gun.bursts += 2;
+                                }
+                                else
+                                {
+                                    gun.bursts = 0;
+                                }
+                                break;
+                            case 2: //damage
+                                if (i < 3)
+                                {
+                                    gun.damage *= 1.5f;
+                                }
+                                else
+                                {
+                                    gun.damage /= 2f;
+                                }
+                                break;
+                            case 3: //gravity
+                                if (i < 3)
+                                {
+                                    gun.gravity /= 1.2f;
+                                }
+                                else
+                                {
+                                    gun.gravity *= 3f;
+                                }
+                                break;
+                            case 4: //reflects
+                                if (i < 3)
+                                {
+                                    gun.reflects += 2;
+                                }
+                                else
+                                {
+                                    gun.reflects = 0;
+                                }
+                                break;
+                            case 5: //reload time
+                                if (i < 3)
+                                {
+                                    gun.reloadTime /= 2f;
+                                }
+                                else
+                                {
+                                    gun.reloadTime += .5f;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case 1: //ammo
+                        switch (SubStat)
+                        {
+                            case 0: //max ammo
+                                if (i < 3)
+                                {
+                                    gunAmmo.maxAmmo += 5;
+                                }
+                                else
+                                {
+                                    gunAmmo.maxAmmo -= 3;
+                                }
+                                break;
+                            case 1: //reload time
+                                if (i < 3)
+                                {
+                                    gun.reloadTime /= 2f;
+                                }
+                                else
+                                {
+                                    gun.reloadTime += .5f;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case 2: //health
+                        switch (SubStat)
+                        {
+                            case 0: //regeneration
+                                if (i < 3)
+                                {
+                                    health.regeneration += 5f;
+                                }
+                                else
+                                {
+                                    health.regeneration -= 3f;
+                                }
+                                break;
+                            case 1: //max health
+                                if (i < 3)
+                                {
+                                    data.maxHealth *= 2f;
+                                }
+                                else
+                                {
+                                    data.maxHealth *= .6f;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case 3: //gravity
+                            //gravity force
+                        if (i < 3)
+                        {
+                            gravity.gravityForce /= 1.5f;
+                        }
+                        else
+                        {
+                            gravity.gravityForce *= 3f;
+                        }
+                        break;
+                    case 4: //block
+                        switch (SubStat)
+                        {
+                            case 0: //additional Blocks
+                                if (i < 3)
+                                {
+                                    block.additionalBlocks++;
+                                }
+                                else
+                                {
+                                    block.additionalBlocks = 0;
+                                }
+                                break;
+                            case 1: //cooldown
+                                if (i < 3)
+                                {
+                                    block.cooldown *= .7f;
+                                }
+                                else
+                                {
+                                    block.cooldown *= 1.3f;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case 5: //character stats
+                        switch (SubStat)
+                        {
+                            case 0: //life steal
+                                if (i < 3)
+                                {
+                                    characterStats.lifeSteal += .3f;
+                                }
+                                else
+                                {
+                                    characterStats.lifeSteal /= 2f;
+                                }
+                                break;
+                            case 1: //speed
+                                if (i < 3)
+                                {
+                                    characterStats.movementSpeed *= 1.5f;
+                                }
+                                else
+                                {
+                                    characterStats.movementSpeed *= .7f;
+                                }
+                                break;
+                            case 2: //jumps
+                                if (i < 3)
+                                {
+                                    characterStats.numberOfJumps += 2;
+                                }
+                                else
+                                {
+                                    characterStats.numberOfJumps = 1;
+                                }
+                                break;
+                            case 3: //respawns
+                                if (i < 3)
+                                {
+                                    characterStats.respawns++;
+                                }
+                                else
+                                {
+                                    characterStats.respawns = 0;
+                                }
+                                break;
+                            case 4: //dmg over time
+                                if (i < 3)
+                                {
+                                    characterStats.secondsToTakeDamageOver = 3f;
+                                }
+                                else
+                                {
+                                    characterStats.secondsToTakeDamageOver /= 2f;
+                                }
+                                break;
+                            case 5: //size
+                                if (i < 3)
+                                {
+                                    characterStats.sizeMultiplier /= 1.3f;
+                                }
+                                else
+                                {
+                                    characterStats.sizeMultiplier *= 1.3f;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
-
-            base.GetComponent<PhotonView>().RPC("RPCA_SetStats", RpcTarget.All, new object[] { StatToChange, SubStat });
-
-            switch (StatToChange)
-            {
-                case 0:
-                    switch (SubStat)
-                    {
-                        case 0:
-                            break;
-                        case 1:
-                            break;
-                        case 2:
-                            break;
-                        case 3:
-                            break;
-                        case 4:
-                            break;
-                        case 5:
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case 1:
-                    switch (SubStat)
-                    {
-                        case 0:
-                            break;
-                        case 1:
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case 2:
-                    switch (SubStat)
-                    {
-                        case 0:
-                            break;
-                        case 1:
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case 3:
-                    
-                    break;
-                case 4:
-                    switch (SubStat)
-                    {
-                        case 0:
-                            break;
-                        case 1:
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case 5:
-                    switch (SubStat)
-                    {
-                        case 0:
-                            break;
-                        case 1:
-                            break;
-                        case 2:
-                            break;
-                        case 3:
-                            break;
-                        case 4:
-                            break;
-                        case 5:
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-
 
         }
 
@@ -168,7 +315,7 @@ namespace CommCards.Cards
 
         protected override string GetDescription()
         {
-            return "";
+            return "Randomly increase 3 stats while randomly decreasing 2 stats";
         }
 
         protected override CardInfo.Rarity GetRarity()
@@ -183,15 +330,36 @@ namespace CommCards.Cards
                 new CardInfoStat
                 {
                     positive = true,
-                    stat = "",
-                    amount = "",
+                    stat = "???",
+                    amount = "+",
+                    simepleAmount = CardInfoStat.SimpleAmount.notAssigned
+                },
+                new CardInfoStat
+                {
+                    positive = true,
+                    stat = "???",
+                    amount = "+",
+                    simepleAmount = CardInfoStat.SimpleAmount.notAssigned
+                },
+                new CardInfoStat
+                {
+                    positive = true,
+                    stat = "???",
+                    amount = "+",
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned
                 },
                 new CardInfoStat
                 {
                     positive = false,
-                    stat = "",
-                    amount = "",
+                    stat = "???",
+                    amount = "-",
+                    simepleAmount = CardInfoStat.SimpleAmount.notAssigned
+                },
+                new CardInfoStat
+                {
+                    positive = false,
+                    stat = "???",
+                    amount = "-",
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned
                 }
             };
