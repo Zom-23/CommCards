@@ -397,7 +397,12 @@ namespace CommCards.Cards
     {//block when you take damage
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
+            characterStats.WasDealtDamageAction = blockAgain;
 
+            void blockAgain(Vector2 damage, bool selfDamage)
+            {
+                block.CallDoBlock(true, true);
+            }
         }
 
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
@@ -417,12 +422,12 @@ namespace CommCards.Cards
 
         protected override string GetDescription()
         {
-            return "";
+            return "Block immediately after taking damage";
         }
 
         protected override CardInfo.Rarity GetRarity()
         {
-            return CardInfo.Rarity.Common;
+            return CardInfo.Rarity.Rare;
         }
 
         protected override CardInfoStat[] GetStats()

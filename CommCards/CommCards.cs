@@ -62,6 +62,8 @@ namespace CommCards
             CustomCard.BuildCard<RS_Mind>();
             CustomCard.BuildCard<Pudassassin>();
             CustomCard.BuildCard<Willis>();
+            CustomCard.BuildCard<Tess>();
+            CustomCard.BuildCard<Lilith>();
         }
     }
 }
