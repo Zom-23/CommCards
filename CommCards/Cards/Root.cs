@@ -407,7 +407,7 @@ namespace CommCards.Cards
 
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-
+            statModifiers.health = 1.75f;
         }
 
         public override void OnRemoveCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
@@ -437,16 +437,9 @@ namespace CommCards.Cards
                 new CardInfoStat
                 {
                     positive = true,
-                    stat = "",
-                    amount = "",
-                    simepleAmount = CardInfoStat.SimpleAmount.notAssigned
-                },
-                new CardInfoStat
-                {
-                    positive = false,
-                    stat = "",
-                    amount = "",
-                    simepleAmount = CardInfoStat.SimpleAmount.notAssigned
+                    stat = "Health",
+                    amount = "+75%",
+                    simepleAmount = CardInfoStat.SimpleAmount.aLotOf
                 }
             };
         }

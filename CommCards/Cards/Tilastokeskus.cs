@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnboundLib;
 using UnboundLib.Cards;
 using UnityEngine;
+using CommCards.Extensions;
 
 namespace CommCards.Cards
 {
@@ -14,6 +15,7 @@ namespace CommCards.Cards
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
             block.BlockAction += mapChange(player, block);
+            
 
             Action<BlockTrigger.BlockTriggerType> mapChange(Player _player, Block _block)
             {
@@ -21,22 +23,37 @@ namespace CommCards.Cards
                 {
                     string changeTo = MapManager.instance.levels[UnityEngine.Random.Range(0, MapManager.instance.levels.Length)];
                     Player[] playerData = PlayerManager.instance.players.ToArray();
+                    List<float> healthValues = new List<float>();
+                    List<int> respawnsRemaining = new List<int>();
+                    List<bool> blockCooldown = new List<bool>();
+                    
+                    for (int i = 0; i < playerData.Length; i++)
+                    {
+                        healthValues.Add(playerData[i].data.health);
+                        UnityEngine.Debug.Log($"{healthValues[i]}");
+                        respawnsRemaining.Add(playerData[i].data.stats.remainingRespawns);
+                        blockCooldown.Add(playerData[i].data.block.IsOnCD());
+                    }
 
                     MapManager.instance.LoadNextLevel(true, true);
                     MapManager.instance.RPCA_CallInNewMapAndMovePlayers(MapManager.instance.currentLevelID);
-                    Player[] newPlayerData = PlayerManager.instance.players.ToArray();
-                    for (int i = 0; i < playerData.Length; i++)
+
+                    while(!PlayerStatus.PlayerSimulated(player))
                     {
-                        newPlayerData[i] = playerData[i];
+                        WaitForSeconds wait = new WaitForSeconds(.2f);
                     }
 
-                    //MapManager.instance.UnloadScene(MapManager.instance.currentMap.Scene);
-                    //MapManager.instance.RPCA_LoadLevel(changeTo);
-                    //MapManager.instance.RPCA_CallInNewMapAndMovePlayers(int.Parse(changeTo));
-                    //PlayerManager.instance.RPCA_MovePlayers();
-                    //PlayerManager.instance.SetPlayersSimulated(true);
-                    //MapManager.instance.LoadLevelFromID(int.Parse(MapManager.instance.levels[UnityEngine.Random.Range(0, MapManager.instance.levels.Length)]));
-                    
+                    for (int i = 0; i < playerData.Length; i++)
+                    {
+                        playerData[i].data.healthHandler.CallTakeDamage((playerData[i].data.maxHealth - healthValues[i]) * Vector2.up, Vector2.up);
+                        playerData[i].data.stats.remainingRespawns = respawnsRemaining[i];
+                        if(blockCooldown[i])
+                        {
+                            playerData[i].data.block.Cooldown();
+                        }
+                    }
+
+
                 };
             }
         }
